@@ -1,0 +1,20 @@
+import React from 'react';
+import { Provider, defaultTheme, Button, Flex, View} from '@adobe/react-spectrum';
+
+
+const App = () => {
+  return (
+    <Provider theme={defaultTheme}>
+      <Button variant="cta" onPress={() => alert('Hey there!')}>
+        Hello React Spectrum!
+      </Button>
+      <Flex direction="column" width="size-2000" gap="size-100">
+        <View backgroundColor="celery-600" height="size-800" />
+        <View backgroundColor="blue-600" height="size-800" />
+        <View backgroundColor="magenta-600" height="size-800" />
+      </Flex>
+    </Provider>
+  )
+}
+
+export default App;
