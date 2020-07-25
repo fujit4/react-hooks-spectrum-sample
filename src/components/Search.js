@@ -20,7 +20,9 @@ const Search = (props) => {
 
   return (
         <Flex direction="row" gap="size-100">
-          <TextField label="Title" labelPosition="side" placeholder="title"
+          <TextField
+            // label="Title" labelPosition="side"
+            placeholder="title"
             value={searchValue} onChange={handleSearchInputChanges} />
           <Button variant="cta" onPress={callSearchFunction}>Search</Button>
       </Flex>
