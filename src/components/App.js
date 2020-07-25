@@ -3,9 +3,13 @@ import './App.css';
 import HookedHeader from "./HookedHeader";
 import Movie from "./Movie";
 import Search from "./Search";
-import { Provider, defaultTheme, Flex, View, Text, Grid, repeat, Footer, ProgressCircle } from '@adobe/react-spectrum';
+import { Provider, defaultTheme, Flex, View, Text, Grid, repeat, Footer, ProgressCircle, Link } from '@adobe/react-spectrum';
 
 const MOVIE_API_URL = "https://www.omdbapi.com/?s=man&apikey=4a3b711b"; // you should replace this with yours
+
+const initialColorSchemeState = {
+  colorScheme: "light"
+};
 
 const initialState = {
   loading: true,
@@ -15,14 +19,18 @@ const initialState = {
 
 const colorSchemeReducer = (state, action) => {
   switch (action.type) {
-    case "LIGHT_MODE":
+    case "TURN_LIGHT_ON":
       return {
+        ...state,
         colorScheme: "light"
       };
-    case "DARK_MODE":
+    case "TURN_LIGHT_OFF":
       return {
+        ...state,
         colorScheme: "dark"
       };
+    default:
+      return state;
   };
 };
 
@@ -53,9 +61,9 @@ const reducer = (state, action) => {
 
 const App = () => {
   const [colorSchemeStete, colorSchemeDispatcher]
-    = useReducer(colorSchemeReducer, { colorScheme: "light" })
+    = useReducer(colorSchemeReducer, initialColorSchemeState)
 
-    const [state, dispatch] = useReducer(reducer, initialState);
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
     fetch(MOVIE_API_URL)
@@ -90,16 +98,25 @@ const App = () => {
       });
   };
 
+  const switchColorScheme = action => {
+    colorSchemeDispatcher({ type: action })
+  };
+
   const { movies, errorMessage, loading } = state;
 
   return (
-    <Provider theme={defaultTheme} colorScheme={colorSchemeStete.colorScheme}>
+    <Provider theme={defaultTheme}
+      colorScheme={colorSchemeStete.colorScheme}>
+        
       {/* 全体をflexbox化する */}
       {/* ダークモードでも白地が見えないように画面の高さ分をコンテンツ領域で確保する */}
       <Flex direction="column" gap="size-100" minHeight="100vh">
 
         {/* ヘッダー部 */}
-        <HookedHeader text="HOOKED" />
+        <HookedHeader
+          text="HOOKED"
+          switch={switchColorScheme}
+          currentColorScheme={colorSchemeStete.colorScheme} />
 
         {/* 検索部 中央寄せにする*/}
         <Flex direction="row" justifyContent="center">
@@ -145,14 +162,21 @@ const App = () => {
 
 
         </Grid>
+
+        {/* フッター リンクをつけてみる*/}
         <Footer alignSelf="center">
-          <a href="https://www.freecodecamp.org/news/how-to-build-a-movie-search-app-using-react-hooks-24eb72ddfaf7/" target="_blank">
-            freeCodeCamp：How to build a movie search app using React Hooks
+          {/* Linkを使うとダークモードでも見やすく色が変わる */}
+          <Link>
+            <a href="https://www.freecodecamp.org/news/how-to-build-a-movie-search-app-using-react-hooks-24eb72ddfaf7/" target="_blank">
+              freeCodeCamp：How to build a movie search app using React Hooks
           </a>
-          <br/>
-          <a href="https://react-spectrum.adobe.com/react-spectrum/index.html" target="_blank">
-          React Spectrum：A React implementation of Spectrum, Adobe’s design system.
+          </Link>
+          <br />
+          <Link>
+            <a href="https://react-spectrum.adobe.com/react-spectrum/index.html" target="_blank">
+              React Spectrum：A React implementation of Spectrum, Adobe’s design system.
           </a>
+          </Link>
         </Footer>
       </Flex>
     </Provider>

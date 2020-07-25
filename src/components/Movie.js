@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, Heading, View, Flex, Text, TextField } from '@adobe/react-spectrum';
+import { Image, Heading, View, Flex, Text} from '@adobe/react-spectrum';
 
 const DEFAULT_PLACEHOLDER_IMAGE =
   "https://m.media-amazon.com/images/M/MV5BMTczNTI2ODUwOF5BMl5BanBnXkFtZTcwMTU0NTIzMw@@._V1_SX300.jpg";
